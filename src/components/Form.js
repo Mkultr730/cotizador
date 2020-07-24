@@ -1,4 +1,4 @@
-import React from 'react';
+import React,  { useState } from 'react';
 import styled from '@emotion/styled';
 
 const Field = styled.div`
@@ -42,11 +42,31 @@ const Button = styled.button`
 `;
 
 const Form = () => {
+
+    const [data, setData] = useState({
+        brand: '',
+        year: '',
+        plan: ''
+    });
+
+    const { brand, year, plan } = data;
+
+    const getInfo = e => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value
+        });
+    }
+
     return ( 
         <form>
             <Field>
                 <Label>Marca</Label>
-                <Select>
+                <Select
+                    name="brand"
+                    value={brand}
+                    onChange={getInfo}
+                >
                     <option value="">-- SELECCIONE --</option>
                     <option value="americano">Americano</option>
                     <option value="europeo">Europeo</option>
@@ -56,7 +76,11 @@ const Form = () => {
 
             <Field>
                 <Label>Año</Label>
-                <Select>
+                <Select
+                    name="year"
+                    value={year}
+                    onChange={getInfo}
+                >
                     <option value="">-- SELECCIONE --</option>
                     <option value="2021">2021</option>
                     <option value="2020">2020</option>
@@ -77,12 +101,16 @@ const Form = () => {
                     type="radio"
                     name="plan"
                     value="básico"
+                    checked={plan === "básico"}
+                    onChange={getInfo}
                 /> Básico
 
                 <InputRadio
                     type="radio"
                     name="plan"
                     value="completo"
+                    checked={plan === "completo"}
+                    onChange={getInfo}
                 /> Completo
             </Field>
 
