@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 const Field = styled.div`
     display: flex;
     margin-bottom: 1rem;
+    margin-top: 1rem;
     align-items: center;
 `;
 
@@ -41,6 +42,14 @@ const Button = styled.button`
     }
 `;
 
+const Error = styled.div`
+    background-color: #f38282;
+    color: white;
+    padding: 1rem;
+    width: 100%;
+    text-align: center;
+`;
+
 const Form = () => {
 
     const [data, setData] = useState({
@@ -48,6 +57,8 @@ const Form = () => {
         year: '',
         plan: ''
     });
+
+    const [error, setError] = useState(false);
 
     const { brand, year, plan } = data;
 
@@ -58,8 +69,22 @@ const Form = () => {
         });
     }
 
+    const handleSubmit = e => {
+        e.preventDefault();
+        
+        if (brand.trim() === '' || year.trim() === '' || plan.trim() === '') {
+            setError(true);
+            return;
+        }
+        setError(false);
+    }
+
     return ( 
-        <form>
+        <form
+            onSubmit={handleSubmit}
+        >
+            { error? <Error>All fields are required</Error> : null}
+
             <Field>
                 <Label>Marca</Label>
                 <Select
@@ -114,7 +139,7 @@ const Form = () => {
                 /> Completo
             </Field>
 
-            <Button type="button">Cotizar</Button>
+            <Button type="submit">Cotizar</Button>
         </form>
     );
 }
