@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 const Message = styled.p`
     background-color: #26c6da;
@@ -11,7 +12,18 @@ const Message = styled.p`
 
 const Result = ({result}) => {
     return ( 
-        <Message>Total: ${result}</Message>
+        <TransitionGroup
+            component="p"
+            className="resultado"
+        >
+            <CSSTransition
+                classNames="resultado"
+                key={result}
+                timeout={{ enter: 500, exit: 500 }}
+            >
+                <Message>Total: ${result}</Message>
+            </CSSTransition>
+        </TransitionGroup>
      );
 }
  
