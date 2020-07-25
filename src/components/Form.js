@@ -1,6 +1,8 @@
 import React,  { useState } from 'react';
 import styled from '@emotion/styled';
 
+import { getYearDifference, getBrandFee, getPlanFee } from '../helpers'
+
 const Field = styled.div`
     display: flex;
     margin-bottom: 1rem;
@@ -50,7 +52,7 @@ const Error = styled.div`
     text-align: center;
 `;
 
-const Form = () => {
+const Form = ({setSummary}) => {
 
     const [data, setData] = useState({
         brand: '',
@@ -77,6 +79,24 @@ const Form = () => {
             return;
         }
         setError(false);
+
+        let result = 2000;
+
+        const diff = getYearDifference(year);
+
+        // subtract 3% for each year of difference
+        result -= (( diff * 3 ) * result) / 100;
+
+        // Fee per brand
+        result *= getBrandFee(brand);
+
+        result = parseFloat(result*getPlanFee(plan)).toFixed(2);
+
+        setSummary({
+            result,
+            data
+        });
+
     }
 
     return ( 
@@ -125,8 +145,8 @@ const Form = () => {
                 <InputRadio
                     type="radio"
                     name="plan"
-                    value="básico"
-                    checked={plan === "básico"}
+                    value="basico"
+                    checked={plan === "basico"}
                     onChange={getInfo}
                 /> Básico
 

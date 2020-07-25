@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, Fragment } from 'react';
 import Header from './components/Header';
 import Form from './components/Form';
+import Summary from './components/Summary';
+import Result from './components/Result';
 
 import styled from '@emotion/styled';
 
@@ -15,13 +17,29 @@ const FormContainer = styled.div`
 `;
 
 function App() {
+
+  const [summary, setSummary] = useState({});
+
+  const { result, data } = summary;
+
   return (
     <Container>
       <Header 
         titulo="Cotizador de Seguros" 
       />
       <FormContainer>
-        <Form />
+        <Form 
+          setSummary={setSummary}
+        />
+        { data ? 
+          (
+            <Fragment>
+              <Summary data={data}/>
+              <Result result={result}/>
+            </Fragment>
+          )
+          : <p>Choose brand, year and plan.</p>
+        }
       </FormContainer>
     </Container>
 
